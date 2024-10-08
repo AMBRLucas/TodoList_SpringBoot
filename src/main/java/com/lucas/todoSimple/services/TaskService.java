@@ -11,15 +11,20 @@ import com.lucas.todoSimple.repositories.TaskRepositorie;
 import com.lucas.todoSimple.models.Task;
 import com.lucas.todoSimple.models.User;
 
+/*
+ ? Nos services é utilizadas as funcionalidades dos Repositories para obter e retornar os dados
+*/
+
+//! Annotation para definir a classe como um Service
 @Service
 public class TaskService {
     
-    @Autowired    
+    @Autowired // Injeção automatica de dependencia    
     private TaskRepositorie taskRepositorie;
 
-    @Autowired
+    @Autowired // Injeção automatica de dependencia
     private UserService userService;
-
+    
     public Task findById(Long id){
         Optional<Task> task = this.taskRepositorie.findById(id);
 

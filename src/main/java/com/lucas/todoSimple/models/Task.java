@@ -17,6 +17,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/*
+    ! Annotations em respectiva ordem:
+    ? Define essa classe como um modelo de entidade
+    ? Definição do nome da tabela a ser criada no BD
+    ? As proximas 5 Annotations são para geração em tempo real de alguns metodos usando Lombok sendo eles:
+    ? Construtor com e sem argumentos, Getters e Setters e Hash e Equals  
+ */
 @Entity
 @Table(name = Task.TABLE_NAME)
 @AllArgsConstructor
@@ -25,21 +32,22 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode
 public class Task {
+    //* Nome da tabela
     public static final String TABLE_NAME = "task";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true)
+    @Id // Define esse atributo como o identificador do objeto
+    @GeneratedValue(strategy = GenerationType.IDENTITY)// Define o atributo como uma chave primaria gerada automaticamente
+    @Column(name = "id", unique = true) // Define o nome dessa coluna como id e que ele é unico e não pode ser repetido no BD
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false, updatable = false)
+    @ManyToOne // Define o relacionamento Muitos para um entre Tasks e Usuarios
+    @JoinColumn(name = "user_id", nullable = false, updatable = false) // Define como coluna de chave estrangeira o id do usuario que realizou o registro da task
     private User user;
 
-    @Column(name = "description", length = 255, nullable = false)
-    @NotNull
-    @NotEmpty
-    @Size(min = 1, max = 255)
+    @Column(name = "description", length = 255, nullable = false) // Cria a coluna de Description do BD
+    @NotNull // Não pode ser nulo
+    @NotEmpty // Não pode ser vazio
+    @Size(min = 1, max = 255) // Regras
     private String description;
     
 }
