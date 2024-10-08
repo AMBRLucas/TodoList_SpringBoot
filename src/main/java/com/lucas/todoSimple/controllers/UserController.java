@@ -17,7 +17,7 @@ import java.net.URI;
 
 import com.lucas.todoSimple.services.UserService;
 
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 
 import com.lucas.todoSimple.models.User;
 import com.lucas.todoSimple.models.User.CreateUser;

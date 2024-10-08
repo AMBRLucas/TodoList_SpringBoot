@@ -19,7 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.lucas.todoSimple.models.Task;
 import com.lucas.todoSimple.services.TaskService;
 import com.lucas.todoSimple.services.UserService;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/task")
