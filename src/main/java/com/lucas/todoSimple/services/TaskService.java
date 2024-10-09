@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.lucas.todoSimple.repositories.TaskRepositorie;
+import com.lucas.todoSimple.services.exceptions.DataBindingViolationException;
+import com.lucas.todoSimple.services.exceptions.ObjectNotFoundException;
 import com.lucas.todoSimple.models.Task;
 import com.lucas.todoSimple.models.User;
 
@@ -28,7 +30,7 @@ public class TaskService {
     public Task findById(Long id){
         Optional<Task> task = this.taskRepositorie.findById(id);
 
-        return task.orElseThrow(() -> new RuntimeException(
+        return task.orElseThrow(() -> new ObjectNotFoundException(
             "Tarefa não encontrada! ID: " + id + " Tipo: " + Task.class.getName()
         ));
     }   
@@ -61,7 +63,7 @@ public class TaskService {
         try {
             this.taskRepositorie.deleteById(id);
         } catch (Exception e) {
-            throw new RuntimeException("Não é possivel excluir pois a entidades relacionadas!");
+            throw new DataBindingViolationException("Não é possivel excluir pois a entidades relacionadas!");
         }
     }
 }

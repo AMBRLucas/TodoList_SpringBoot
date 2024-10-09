@@ -8,6 +8,8 @@ import java.util.Optional;
 
 import com.lucas.todoSimple.models.User;
 import com.lucas.todoSimple.repositories.UserRepositorie;
+import com.lucas.todoSimple.services.exceptions.DataBindingViolationException;
+import com.lucas.todoSimple.services.exceptions.ObjectNotFoundException;
 
 
 @Service
@@ -19,7 +21,7 @@ public class UserService {
     public User findById(Long id){
         Optional<User> user = this.userRepositorie.findById(id);
 
-        return user.orElseThrow(() -> new RuntimeException(
+        return user.orElseThrow(() -> new ObjectNotFoundException(
             "Usuario não encontrado! ID: " + id + "Tipo: " + User.class.getName()
         ));
     }
@@ -46,7 +48,7 @@ public class UserService {
         try{
             this.userRepositorie.deleteById(id);
         }catch(Exception e){
-            throw new RuntimeException("Não é possivel excluir pois a entidades relacionadas!");
+            throw new DataBindingViolationException("Não é possivel excluir pois a entidades relacionadas!");
         }
     }
 }
