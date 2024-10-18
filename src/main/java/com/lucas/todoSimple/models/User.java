@@ -1,8 +1,11 @@
 package com.lucas.todoSimple.models;
 
+import javax.persistence.CollectionTable;
 //? Importação das Annotations
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,10 +21,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.lucas.todoSimple.models.enums.ProfileEnum;
 
 /*
     ! Annotations em respectiva ordem:
@@ -56,13 +63,27 @@ public class User {
     private String username;
 
     @JsonProperty(access = Access.WRITE_ONLY) //Define que esse atributo pode apenas ser escrito e não lido por questões de segurança
-    @Column(name = "password", length = 50, nullable = false)//Nome da coluna no BD
+    @Column(name = "password", length = 100, nullable = false)//Nome da coluna no BD
     @NotNull(groups ={CreateUser.class, UpdateUser.class})// Não pode ser nulo
     @NotEmpty(groups = {CreateUser.class, UpdateUser.class})// Não pode ser Vazio
-    @Size(groups = CreateUser.class, min = 8, max = 50) // Regras
+    @Size(groups = CreateUser.class, min = 8, max = 100) // Regras
     private String password;
 
     @OneToMany(mappedBy = "user") // Define a relação um para muitos entre a entidade de usuario com a entidade de tasks
     @JsonProperty(access = Access.WRITE_ONLY) // Apenas leitura
     private List<Task> tasks = new ArrayList<Task>();
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @JsonProperty(access = Access.WRITE_ONLY)
+    @CollectionTable(name = "user_profile")
+    @Column(name = "profile", nullable = false)
+    private Set<Integer> profiles = new HashSet<>();
+
+    public Set<ProfileEnum> getProfiles(){
+        return this.profiles.stream().map(x -> ProfileEnum.ToEnum(x)).collect(Collectors.toSet());
+    }
+
+    public void addProfile(ProfileEnum profileEnum){
+        this.profiles.add(profileEnum.getCode());
+    }
 }
